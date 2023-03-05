@@ -45,7 +45,6 @@ export class ChatGPTPool {
       try {
         chatGPTItem.chatGpt = new ChatGPTAPI({
           ...account,
-          proxyServer: config.openAIProxy,
         });
       } catch (err) {
         //remove this object
@@ -67,12 +66,11 @@ export class ChatGPTPool {
     for (const account of config.chatGPTAccountPool) {
       const chatGpt = new ChatGPTAPI({
         ...account,
-        proxyServer: config.openAIProxy,
       });
       try {
         await AsyncRetry(
           async () => {
-            await chatGpt.initSession();
+            await chatGpt.sendMessage('Hello');
           },
           { retries: 3 }
         );
@@ -163,16 +161,15 @@ export class ChatGPTPool {
     try {
       // TODO: Add Retry logic
       const {
-        response,
+        text,
         conversationId: newConversationId,
-        messageId: newMessageId,
+        id: newMessageId,
       } = await conversation.sendMessage(message, {
-        conversationId,
         parentMessageId: messageId,
       });
       // Update conversation information
       this.setConversation(talkid, newConversationId, newMessageId);
-      return response;
+      return text;
     } catch (err: any) {
       if (err.message.includes("ChatGPT failed to refresh auth token")) {
         // If refresh token failed, we will remove the conversation from pool
