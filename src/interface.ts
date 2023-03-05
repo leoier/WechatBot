@@ -1,4 +1,4 @@
-import { ChatGPTAPIBrowser } from "chatgpt";
+import { ChatGPTAPI } from "chatgpt";
 export interface AccountWithUserInfo {
   apiKey: string;
 }
@@ -7,11 +7,11 @@ export interface AccountWithUserInfo {
 export type IAccount = AccountWithUserInfo;
 
 export interface IChatGPTItem {
-  chatGpt: ChatGPTAPIBrowser;
+  chatGpt: ChatGPTAPI;
   account: IAccount;
 }
 export interface IConversationItem {
-  conversation: ChatGPTAPIBrowser;
+  conversation: ChatGPTAPI;
   account: IAccount;
   conversationId?: string;
   messageId?: string;

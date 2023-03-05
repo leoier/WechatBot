@@ -1,4 +1,4 @@
-import { ChatGPTAPI, ChatGPTAPIBrowser } from "chatgpt";
+import { ChatGPTAPI } from "chatgpt";
 
 import { config } from "./config.js";
 import AsyncRetry from "async-retry";
@@ -43,7 +43,7 @@ export class ChatGPTPool {
     if (chatGPTItem) {
       const account = chatGPTItem.account;
       try {
-        chatGPTItem.chatGpt = new ChatGPTAPIBrowser({
+        chatGPTItem.chatGpt = new ChatGPTAPI({
           ...account,
           proxyServer: config.openAIProxy,
         });
@@ -65,7 +65,7 @@ export class ChatGPTPool {
   async startPools() {
     const chatGPTPools = [];
     for (const account of config.chatGPTAccountPool) {
-      const chatGpt = new ChatGPTAPIBrowser({
+      const chatGpt = new ChatGPTAPI({
         ...account,
         proxyServer: config.openAIProxy,
       });
