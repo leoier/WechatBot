@@ -27,7 +27,7 @@ export class ChatGPTPool {
   async resetAccount(account: IAccount) {
     // Remove all conversation information
     this.conversationsPool.forEach((item, key) => {
-      if ((item.account as AccountWithUserInfo)?.email === account.email) {
+      if ((item.account as AccountWithUserInfo)?.apiKey === account.apiKey) {
         this.conversationsPool.delete(key);
       }
     });
@@ -38,7 +38,7 @@ export class ChatGPTPool {
       ): item is IChatGPTItem & {
         account: AccountWithUserInfo;
         chatGpt: ChatGPTAPI;
-      } => item.account.email === account.email
+      } => item.account.apiKey === account.apiKey
     );
     if (chatGPTItem) {
       const account = chatGPTItem.account;
@@ -51,10 +51,10 @@ export class ChatGPTPool {
         //remove this object
         this.chatGPTPools = this.chatGPTPools.filter(
           (item) =>
-            (item.account as AccountWithUserInfo)?.email !== account.email
+            (item.account as AccountWithUserInfo)?.apiKey !== account.apiKey
         );
         console.error(
-          `Try reset account: ${account.email} failed: ${err}, remove it from pool`
+          `Try reset account: ${account.apiKey} failed: ${err}, remove it from pool`
         );
       }
     }
@@ -82,7 +82,7 @@ export class ChatGPTPool {
         });
       } catch {
         console.error(
-          `Try init account: ${account.email} failed, remove it from pool`
+          `Try init account: ${account.apiKey} failed, remove it from pool`
         );
       }
     }
