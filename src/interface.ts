@@ -13,7 +13,6 @@ export interface IChatGPTItem {
 export interface IConversationItem {
   conversation: ChatGPTAPI;
   account: IAccount;
-  conversationId?: string;
   messageId?: string;
 }
 
