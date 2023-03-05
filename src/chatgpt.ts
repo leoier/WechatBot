@@ -138,11 +138,10 @@ export class ChatGPTPool {
     this.conversationsPool.set(talkid, conversationItem);
     return conversationItem;
   }
-  setConversation(talkid: string, conversationId: string, messageId: string) {
+  setConversation(talkid: string, messageId: string) {
     const conversationItem = this.getConversation(talkid);
     this.conversationsPool.set(talkid, {
       ...conversationItem,
-      conversationId,
       messageId,
     });
   }
@@ -156,19 +155,18 @@ export class ChatGPTPool {
       return this.command(message as typeof Commands[number], talkid);
     }
     const conversationItem = this.getConversation(talkid);
-    const { conversation, account, conversationId, messageId } =
+    const { conversation, account, messageId } =
       conversationItem;
     try {
       // TODO: Add Retry logic
       const {
         text,
-        conversationId: newConversationId,
         id: newMessageId,
       } = await conversation.sendMessage(message, {
         parentMessageId: messageId,
       });
       // Update conversation information
-      this.setConversation(talkid, newConversationId, newMessageId);
+      this.setConversation(talkid, newMessageId);
       return text;
     } catch (err: any) {
       if (err.message.includes("ChatGPT failed to refresh auth token")) {
